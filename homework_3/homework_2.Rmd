@@ -1,0 +1,104 @@
+---
+title: "Starting with R homework 3"
+author: "Joshua Hansen"
+date: "2022-09-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+**Instructions: For this assignment, you need to answer a couple questions with code and then take a screenshot of your working environment.**
+
+
+
+
+### 1) Use R to figure out how many elements in the vector below are greater than 2 and then tell me what their sum (of the larger than 2 elements) is.
+
+
+rooms <- c(1, 2, 4, 5, 1, 3, 1, NA, 3, 1, 3, 2, 1, NA, 1, 8, 3, 1, 4, NA, 1, 3, 1, 2, 1, 7, 1, 9, 3, NA)
+
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+# here I assign the data in a vector vector
+rooms <- c(1, 2, 4, 5, 1, 3, 1, NA, 3, 1, 3, 2, 1, NA, 1, 8, 3, 1, 4, NA, 1, 3, 1, 2, 1, 7, 1, 9, 3, NA) 
+
+# omitting missing values
+
+#rooms <- na.omit(rooms) #- could also use this
+rooms <- rooms[!is.na(rooms)]
+
+
+# define vector with values > 2
+two_rooms <- rooms[rooms > 2]
+
+# finding the length of the vector - length = amount of rooms that are left with more than two rooms
+length(two_rooms)
+
+# here im taking the sum of this vector
+sum(two_rooms)
+```
+answer: There are 12 rooms with a value over 2 and their total sum 55
+
+
+### 2) What type of data is in the 'rooms' vector?
+
+```
+
+class(rooms)
+
+```
+the datatype of the vector rooms is: numeric. That means the data are integers (numbers)
+
+
+
+### 3) Submit the following image to Github: Inside your R Project (.Rproj), install the 'tidyverse' package and use the download.file() and read_csv() function to read the SAFI_clean.csv dataset into your R project as 'interviews' digital object (see instructions in https://datacarpentry.org/r-socialsci/setup.html and 'Starting with Data' section). Take a screenshot of your RStudio interface showing
+
+
+- see  screenshot(<https://github.com/Digital-Methods-HASS/au634054_joshua_hansen/blob/main/homework_3/au634056_joshuahansen1.png>)
+
+
+
+### 4) Challenge: If you managed to create your own Danish king dataset, use it. If not, you the one attached to this assignment (it might need to be cleaned up a bit). Load the dataset into R as a tibble. Calculate the mean() and median() duration of rule over time and find the three mondarchs ruling the longest. How many days did they rule (accounting for transition year?)
+
+```{r}
+# load the data
+df_kings <- read_csv2("kings.csv")
+# data cleaning + adding days of rule 
+df_kings <- na.omit(df_kings) 
+
+
+
+
+df_kings$"Yearasruler" <- as.integer(df_kings$"Yearasruler") # here I made the column data type to integers, so we can transform it to days
+
+
+df_kings$"ruleInDays" <- df_kings$"Yearasruler"*365 # here i make the years to days
+
+# finding the mean rule in days
+df_kings$"ruleInDays" <- as.integer(df_kings$"ruleInDays")
+mean(df_kings$"ruleInDays") 
+
+# finding the median rule in days
+median(df_kings$"ruleInDays") 
+
+
+# finding the 3 longest rulers 
+df_kings %>% 
+arrange(desc(ruleInDays)) %>% 
+slice(1:3)
+``` 
+
+The mean ruling time is 6819 days and the median time is 5110 days. The monarchs ruling the most time are Christian 4., Erik 7. af Pommern and Christian 7., who ruled 21.900 days, 15.695 days and 15.330 days 
+
+- Joshua
+
+
+
+

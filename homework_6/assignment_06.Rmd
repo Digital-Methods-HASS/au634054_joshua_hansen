@@ -1,0 +1,81 @@
+# Assignment 6
+## made by Joshua 201905780 Cultural Data Science 
+
+__Task 1__ : Define a defensive function that calculates the Gross Domestic Product of a nation from the data available in the gapminder dataset. You can use the population and GDPpercapita columns for it. Using that function, calculate the GDP of Denmark in the following years: 1967, 1977, 1987, 1997, 2007, and 2017.
+
+In order to work with the gapminder data, we can either download and read it as a csv file or just install it through R, as it is an included dataset. 
+
+```{r library}
+install.packages("gapminder")
+library(gapminder)
+```
+
+After that, we can inspect if the data is available: 
+
+```{r inspect}
+head(gapminder)
+```
+
+To write the function, we have to consider to include the year and the country column of the dataset. 
+The GDP we can calculate by taking the GDP per capita times the population of the country. 
+
+We want a function, that takes our data is input and can select a specific year and a specific country: 
+The parameters are the "input" we give the function in order for it to work. In the function you can use the variable names from the parameter as a "place-holder", so when we use the function, the parameter variables are gonna be switched to the input we give the function.
+
+```{r write a function}
+calc_GDP_by_year_country <- function(data, year=NULL, country=NULL) { # create function called calcGDP, w/ 3 prmts, with country&year set to default = null.
+  if(!is.null(year)) { # i.e. : if the parameter year is not null,check for that yearand return a subset
+    data <- data[data$year %in% year, ] # %in% checks if the year given is included in the dataframe
+  }
+  if (!is.null(country)) { # ifcountry parameter is not null, check for country in DF and return a subset
+    data <- data[data$country %in% country,]
+  }
+  gdp <- data$pop * data$gdpPercap # gdp is population times the gdp per capita
+  
+  new <- cbind(data, gdp=gdp) # cbind == column-bind, puts the calculated gdp as a new column in the dataset
+  return(new) # we return the updated dataset with the gdp column
+}
+calc_GDP_by_year_country(gapminder, country="Denmark") # calling function with gapminder data, and country set to Denmark
+```
+
+Here you can see a list of the different GDP's in denmark throughout the years.
+
+
+__Task 2__ : Write a script that loops over each country in the gapminder dataset, tests whether the country starts with a ‘B’ , and prints out whether the life expectancy is smaller than 50, between 50 and 70, or greater than 70. (Hint: remember the grepl function, and review the Control Flow tutorial)
+
+
+For this task, we:
+1. subset the country column, and check whether or not a country  starts with a "B"
+2. calculate the average life expectancy for that specific country
+3. control flow:we want to see if the life expectancy is <50 or between 50 and 70 or >70 and output the fitting category
+
+```{r function}
+low_exp <- 50 # creating a threshold of the low life expectancy, 
+high_exp <- 70
+candidateCountries <- grep("^B", unique(gapminder$country), value = TRUE) # picking all the countries that starts with a "B" using the grepl function
+
+for (country in candidateCountries) { #loop over the countries starting with "B"
+
+    current_country <- gapminder[gapminder$country == country, ] #specifying the country we want the mean lifeExp of
+    average_exp <- mean(current_country$lifeExp, na.rm = TRUE) # calc. the mean of lifeExp for the country we iterate
+   
+  
+  if(average_exp < low_exp) { # if the average life expectancy is lower than 50, print out the expectancy
+    cat("the average life expectancy in", country, "is less than", low_exp, "\n")
+  } else if(average_exp > low_exp && average_exp < high_exp) {
+    cat("the average life expectancy in", country, "is between", low_exp, "and", high_exp, "\n")
+  } else {
+    cat("the average life expectancy in", country, "is greater than", high_exp, "\n") # cat = function to print output
+  }
+
+  rm(average_exp) # we are removing the tmp after each iteration, to create the average lifeExp for the next country
+}
+```
+
+Here we can see an output with the life expectancies of the countries starting with "B" 
+
+
+__Task 3__ ups sorry :) 
+
+
+

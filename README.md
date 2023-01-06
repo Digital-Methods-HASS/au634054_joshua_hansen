@@ -6,7 +6,7 @@ This repository contains assignments from throughout the semester and my final p
 
 All assignments are reproducible and tested on my Acer Aspire on os Windows 11.
 
-The final project should only be tested in its original directory and environment, as the code contains specific working directories. 
+The final project should only be tested in its original directory and environment, as the code contains specific working directories. The project was made in python using Jupyter Notebook in an anaconda environment. 
 Furthermore the final project is done with the Salling Group API (https://developer.sallinggroup.com/) and requires an account and authentification key, which is a free service. The API only provides 200 requests per day. (date: 06/01/2023)
 
 
